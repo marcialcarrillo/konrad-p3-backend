@@ -1,4 +1,5 @@
 const User = require("../models/users.model");
+const Account = require("../models/accounts.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
@@ -21,35 +22,38 @@ addUser = async (body) => {
 
   //add the user to the database
   const newUser = await User.create({
-    firstName: body.firstName,
-    lastName: body.lastName,
-    dateOfBirth: body.dateOfBirth,
-    gender: body.gender,
-    username: body.username,
+    fullName: body.fullName,
+    idNumber: body.idNumber,
+    incomeSource: body.incomeSource,
     email: body.email,
     password: hash,
-    ccType: body.ccType,
-    ccNum: body.ccNum,
-    ccExp: body.ccExp,
-    ccCvs: body.ccCvs,
   });
 
+  const newAccount = await Account.create({
+    accountOwnerId: body.idNumber,
+    accountCountry: body.accountCountry,
+    currency: body.currency,
+    balance: 0.00,
+  })
+
   return newUser;
+};
 
-  const user = await User.findOne({ where: { username: username } });
-
-  const username = body.username;
+loginUser = async (body) => {
+  const email = body.email;
   const password = body.password;
-  let user = await User.findOne({ username: username });
+  let user = await User.findOne({ where: { email: email } });
   const hash = user.password;
   const match = await bcrypt.compare(password, hash);
   if (match) {
-    let token = jwt.sign({ username: username }, "not_hard_coded");
+    //TODO: use env variables
+    let token = jwt.sign({ email: email }, "not_hard_coded");
     return token;
   } else {
     return null;
   }
 };
+
 
 const deleteUser = async (username) => {
     await User.destroy({
@@ -58,7 +62,9 @@ const deleteUser = async (username) => {
 };
 
 module.exports = {
+  findUser,
   getUsers,
   addUser,
   deleteUser,
+  loginUser,
 };

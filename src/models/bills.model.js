@@ -8,9 +8,8 @@ const Bill = sequelize.define(
     {
         // Model attributes are defined here
         billId: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
         },
         debtorID: {
             type: DataTypes.INTEGER,
@@ -19,6 +18,10 @@ const Bill = sequelize.define(
                 model: User,
                 key: "idNumber",
             },
+        },
+        contractID: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         serviceName: {
             type: DataTypes.STRING,
@@ -39,12 +42,12 @@ const Bill = sequelize.define(
     }
 );
 
-// User.sync({ force: true }).finally(() => {
-//     sequelize.close();
-// });
-
-User.sync().finally(() => {
-    // sequelize.close();
+User.sync({ force: true }).finally(() => {
+    sequelize.close();
 });
+
+// User.sync().finally(() => {
+//     // sequelize.close();
+// });
 
 module.exports = Bill;

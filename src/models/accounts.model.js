@@ -12,9 +12,25 @@ const Account = sequelize.define("Account", {
             key: "idNumber",
         },
     },
-    accountNumber: {
-        type: DataTypes.STRING,
+    iban: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return `${this.accountCountry}${this.accountNumber}`;
+        },
+        set(value) {
+          throw new Error('Do not try to set the `iban` directly.');
+        }
+    },
+    accountCountry: {
+        type: DataTypes.ENUM,
         allowNull: false,
+        values: ["CR", "US"],
+    },
+    accountNumber: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
     },
     currency: {
         type: DataTypes.ENUM,
@@ -25,14 +41,17 @@ const Account = sequelize.define("Account", {
         type: DataTypes.DECIMAL(65, 2),
         allowNull: false,
     },
+},
+{
+  initialAutoIncrement: 41015201001092741156,
 });
 
-// User.sync({ force: true }).finally(() => {
-//     sequelize.close();
+User.sync({ force: true }).finally(() => {
+    sequelize.close();
+});
+
+// User.sync().finally(() => {
+//     // sequelize.close();
 // });
-
-User.sync().finally(() => {
-    // sequelize.close();
-});
 
 module.exports = User;

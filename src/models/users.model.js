@@ -13,6 +13,7 @@ const User = sequelize.define(
             type: DataTypes.INTEGER,
             allowNull: false,
             unique: true,
+            primaryKey: true,
         },
         incomeSource: {
             type: DataTypes.ENUM,
@@ -31,12 +32,12 @@ const User = sequelize.define(
     }
 );
 
-// User.sync({ force: true }).finally(() => {
-//     sequelize.close();
-// });
-
-User.sync().finally(() => {
-    // sequelize.close();
+User.sync({ force: true }).finally(() => {
+    sequelize.close();
 });
+
+// User.sync().finally(() => {
+//     // sequelize.close();
+// });
 
 module.exports = User;
