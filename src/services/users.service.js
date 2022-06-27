@@ -36,19 +36,19 @@ addUser = async (body) => {
 
   return newUser;
 
-  // const user = await User.findOne({ where: { username: username } });
+  const user = await User.findOne({ where: { username: username } });
 
-  // const username = body.username;
-  // const password = body.password;
-  // let user = await User.findOne({ username: username });
-  // const hash = user.password;
-  // const match = await bcrypt.compare(password, hash);
-  // if (match) {
-  //   let token = jwt.sign({ username: username }, "not_hard_coded");
-  //   return token;
-  // } else {
-  //   return null;
-  // }
+  const username = body.username;
+  const password = body.password;
+  let user = await User.findOne({ username: username });
+  const hash = user.password;
+  const match = await bcrypt.compare(password, hash);
+  if (match) {
+    let token = jwt.sign({ username: username }, "not_hard_coded");
+    return token;
+  } else {
+    return null;
+  }
 };
 
 const deleteUser = async (username) => {

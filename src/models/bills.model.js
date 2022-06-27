@@ -1,33 +1,41 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/sequelize.config");
+const User = require("../models/users.model");
+const Account = require("../models/accounts.model");
 
-const User = sequelize.define(
-    "User",
+const Bill = sequelize.define(
+    "Bill",
     {
         // Model attributes are defined here
-        fullName: {
+        billId: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
         },
-        idNumber: {
+        debtorID: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            unique: true,
+            references: {
+                model: User,
+                key: "idNumber",
+            },
         },
-        incomeSource: {
-            type: DataTypes.ENUM,
-            allowNull: false,
-            values: ["Employed / Salaried", "Business Owner", "Self-Employed", "Retired", "Investor", "Other"],
-        },
-        email: {
+        serviceName: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
         },
-        password: {
+        destinationAccount: {
             type: DataTypes.STRING,
             allowNull: false,
-        }
+            references: {
+                model: Account,
+                key: "accountNumber",
+            },
+        },
+        amountToPay: {
+            type: DataTypes.DECIMAL(65, 2),
+            allowNull: false,
+        },
     }
 );
 
@@ -39,4 +47,4 @@ User.sync().finally(() => {
     // sequelize.close();
 });
 
-module.exports = User;
+module.exports = Bill;
