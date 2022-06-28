@@ -31,8 +31,8 @@ const contTypeError = {
   code: 400,
 };
 
-const usernameTaken = {
-  name: "usernameTaken",
+const userTaken = {
+  name: "userTaken",
   message: "User already exists",
   code: 400,
 };
@@ -48,7 +48,7 @@ const loginFailure = {
 customErrors.idError = idError;
 customErrors.authError = authError;
 customErrors.contTypeError = contTypeError;
-customErrors.usernameTaken = usernameTaken;
+customErrors.usernameTaken = userTaken;
 customErrors.loginFailure = loginFailure;
 
 module.exports = {

@@ -1,20 +1,22 @@
 const express = require("express");
 const userRouter = express.Router();
 userRouter.use(express.json());
-const { getUsers, addUser, deleteUser } = require("../services/users.service");
+const {
+    findUser,
+    getUsers,
+    addUser,
+    deleteUser,
+    loginUser,
+    addUserAndAccount,
+} = require("../services/users.service");
+// const { addAccount, deleteAccount } = require("../services/accounts.service");
+const getUserWithAccounts = require("../helpers/userWithAccounts.helper");
 const { customErrors } = require("../helpers/errors.helper");
+const jwt = require("jsonwebtoken");
+const saltRounds = 10;
 
 userRouter
     .route("/signup")
-
-    // .all(async (req, res, next) => {
-    //     try {
-    //         const user = await findUser(req.body.username);
-    //         !user && next(customErrors.usernameTaken);
-    //     } catch (err) {
-    //         next(err);
-    //     }
-    // })
     .get(async (req, res, next) => {
         try {
             const users = await getUsers();
@@ -26,48 +28,44 @@ userRouter
     .post(async (req, res, next) => {
         try {
             //verify if the user already exists and return an error if they do
-            const user = await findUser(req.body.username);
+            let user = await findUser({ where: { email: req.body.email } });
             if (!user) {
-                const userAdded = await addUser(req.body);
+                //try to find him by his id
+                user = await findUser({
+                    where: { idNumber: req.body.idNumber },
+                });
+            }
+            if (!user) {
+                //not found, add him
+                const userAdded = await addUserAndAccount(req.body);
                 res.status(201).send(userAdded);
             } else {
-                next(customErrors.usernameTaken);
+                next(customErrors.userTaken);
             }
         } catch (err) {
-            console.log("post error: ",err);
+            console.log("post error: ", err);
             next(err);
-        }
-    })
-    .delete(async (req, res, next) => {
-        try {
-            const userDeleted = await deleteUser(username);
-            !bookDeleted ? next(customErrors.idError) : res.send(userDeleted);
-        } catch (err) {
-            throw new Error(err);
         }
     });
 
-    userRouter
-        .route("/signup/:id")
-        .delete(async (req, res, next) => {
-            try {
-               const username = req.params.authorsId;
-                const userDeleted = await deleteUser(username);
-                !bookDeleted
-                    ? next(customErrors.idError)
-                    : res.send(userDeleted);
-            } catch (err) {
-                throw new Error(err);
-            }
-        });
+userRouter.route("/signup/:id").delete(async (req, res, next) => {
+    try {
+        const idNumber = req.params.id;
+        const userDeleted = await deleteUser(idNumber);
+        // const accountDeleted = await deleteAccount(idNumber);
+        !userDeleted ? next(customErrors.idError) : res.sendStatus(200);
+    } catch (err) {
+        throw new Error(err);
+    }
+});
 
-// userRouter.route("/login").post(async (req, res, next) => {
-//   try {
-//     const token = await loginUser(req.body);
-//     !token ? next(customErrors.loginFailure) : res.send(token);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
+userRouter.route("/login").post(async (req, res, next) => {
+  try {
+    const token = await loginUser(req.body);
+    !token ? next(customErrors.loginFailure) : res.send(token);
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = userRouter;
