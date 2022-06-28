@@ -35,12 +35,6 @@ const Transaction = sequelize.define("Transaction", {
     },
 });
 
-// Transaction.sync({ force: true }).finally(() => {
-//     sequelize.close();
-// });
-
-Transaction.sync().finally(() => {
-    // sequelize.close();
-});
+Transaction.sync()
 
 module.exports = Transaction;

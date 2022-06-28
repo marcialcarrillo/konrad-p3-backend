@@ -4,13 +4,11 @@ userRouter.use(express.json());
 const {
     findUser,
     getUsers,
-    addUser,
     deleteUser,
     loginUser,
     addUserAndAccount,
 } = require("../services/users.service");
-// const { addAccount, deleteAccount } = require("../services/accounts.service");
-const getUserWithAccounts = require("../helpers/userWithAccounts.helper");
+
 const { customErrors } = require("../helpers/errors.helper");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;

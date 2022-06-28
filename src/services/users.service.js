@@ -9,12 +9,6 @@ const findUser = async (query) => {
     return user;
 };
 
-// const findUserWithAccounts = async (query) => {
-//     let user = await User.findOne(query);
-//     let accounts = await
-//     return user;
-// };
-
 const getUsers = async () => {
     const users = await User.findAll({ include: UserAccAssociation });
 
@@ -55,14 +49,12 @@ const addUserAndAccount = async (body) => {
             include: [UserAccAssociation],
         }
     );
-
     return newUser;
 };
 
 const loginUser = async (body) => {
     const email = body.email;
     const password = body.password;
-    // let user = await getUserWithAccounts(email: email } });
     let user = await User.findOne({ where: { email: email }, include: UserAccAssociation });
     const hash = user.password;
     const match = await bcrypt.compare(password, hash);

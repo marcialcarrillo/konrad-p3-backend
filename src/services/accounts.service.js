@@ -1,4 +1,4 @@
-const Account = require("../../archive/accounts.model");
+const { Account } = require("../../archive/users.model");
 
 const findAccount = async (query) => {
     let account = await Account.findAll(query);

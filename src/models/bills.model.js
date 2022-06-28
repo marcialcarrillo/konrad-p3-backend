@@ -39,12 +39,6 @@ const Bill = sequelize.define("Bill", {
     },
 });
 
-// Bill.sync({ force: true }).finally(() => {
-//     sequelize.close();
-// });
-
-Bill.sync().finally(() => {
-    // sequelize.close();
-});
+Bill.sync()
 
 module.exports = Bill;
