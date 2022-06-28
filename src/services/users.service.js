@@ -58,10 +58,10 @@ const loginUser = async (body) => {
     let user = await User.findOne({ where: { email: email }, include: UserAccAssociation });
     const hash = user.password;
     const match = await bcrypt.compare(password, hash);
-    const accounts = user.accounts.map(acc => acc.iban)
+    // const accounts = user.accounts.map(acc => acc.iban)
     if (match) {
         //TODO: use env variables
-        let token = jwt.sign({ email: email, accounts: accounts}, "not_hard_coded");
+        let token = jwt.sign({ email: email}, "not_hard_coded");
         return token;
     } else {
         return null;
