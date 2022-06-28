@@ -1,11 +1,15 @@
 const { User, Account, UserAccAssociation } = require("../models/users.model");
-// const Accounts =
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 const findUser = async (query) => {
     let user = await User.findOne(query);
+    return user;
+};
+
+const findUserWithAccounts = async (id) => {
+    let user = await User.findOne({ where: { idNumber: id }, include: UserAccAssociation });
     return user;
 };
 
@@ -80,4 +84,5 @@ module.exports = {
     deleteUser,
     loginUser,
     addUserAndAccount,
+    findUserWithAccounts
 };

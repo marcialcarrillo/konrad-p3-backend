@@ -1,16 +1,18 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/sequelize.config");
-const Account = require("./accounts.model");
+const Account = require("./users.model");
 
 const Transaction = sequelize.define("Transaction", {
     // Model attributes are defined here
     originAccount: {
         type: DataTypes.STRING,
-        allowNull: false,
         references: {
             model: Account,
-            key: "accountNumber",
+            key: "iban",
         },
+    },
+    externalOriginAccount: {
+        type: DataTypes.STRING,
     },
     currency: {
         type: DataTypes.ENUM,
@@ -26,7 +28,7 @@ const Transaction = sequelize.define("Transaction", {
         allowNull: false,
         references: {
             model: Account,
-            key: "accountNumber",
+            key: "iban",
         },
     },
     timeStamp: {
@@ -35,6 +37,6 @@ const Transaction = sequelize.define("Transaction", {
     },
 });
 
-Transaction.sync()
+Transaction.sync();
 
 module.exports = Transaction;

@@ -7,6 +7,7 @@ const {
     deleteUser,
     loginUser,
     addUserAndAccount,
+    findUserWithAccounts
 } = require("../services/users.service");
 
 const { customErrors } = require("../helpers/errors.helper");
@@ -26,6 +27,7 @@ userRouter
     .post(async (req, res, next) => {
         try {
             //verify if the user already exists and return an error if they do
+            //TODO: use OR operator
             let user = await findUser({ where: { email: req.body.email } });
             if (!user) {
                 //try to find him by his id
@@ -46,7 +48,8 @@ userRouter
         }
     });
 
-userRouter.route("/signup/:id").delete(async (req, res, next) => {
+userRouter.route("/signup/:id")
+    .delete(async (req, res, next) => {
     try {
         const idNumber = req.params.id;
         const userDeleted = await deleteUser(idNumber);
@@ -55,7 +58,16 @@ userRouter.route("/signup/:id").delete(async (req, res, next) => {
     } catch (err) {
         throw new Error(err);
     }
-});
+    })
+    .get(async (req, res, next) => {
+        try {
+            const id = req.params.id;
+            let user = await findUserWithAccounts(id);
+            !user ? next(customErrors.idError) : res.send(user);
+        } catch (err) {
+            throw new Error(err);
+        }
+    });
 
 userRouter.route("/login").post(async (req, res, next) => {
   try {
