@@ -39,7 +39,8 @@ const Account = sequelize.define(
         iban: {
             type: DataTypes.VIRTUAL,
             get() {
-                const ibanNumber = BigInt(this.accountNumber) + BigInt(41015201001092741156);
+                const ibanNumber =
+                    BigInt(this.accountNumber) + BigInt(41015201001092741156);
                 return `${this.accountCountry}${ibanNumber}`;
             },
             set(value) {
@@ -66,6 +67,7 @@ const Account = sequelize.define(
             type: DataTypes.DECIMAL(65, 2),
             allowNull: false,
             defaultValue: 0.0,
+            validate: { min: 0 },
         },
     },
     {

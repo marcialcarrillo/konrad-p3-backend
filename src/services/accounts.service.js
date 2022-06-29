@@ -30,11 +30,6 @@ const deleteAccount = async (idNumber) => {
 };
 
 const addBalance = async (accountNumber, amount) => {
-    // const account = await Account.findOne({ where: { accountNumber: accountNumber } });
-    // const newBalance = account.balance + amount;
-    // account.balance = newBalance;
-    // // account.balance += Number(amount);
-    // await account.save();
     const account = await Account.increment(
         { balance: amount },
         { where: { accountNumber: accountNumber } }
@@ -43,15 +38,17 @@ const addBalance = async (accountNumber, amount) => {
 };
 
 const deductBalance = async (accountNumber, amount) => {
-    // const account = await Account.findOne({ where: { accountNumber: accountNumber } });
-    // if (account.balance >= Number(amount)) {
-    //     account.balance -= Number(amount);
-    //     await account.save();
-    //     return account;
-    // } else {
-    //     throw new Error("Not enough funds");
-    // }
-    const account = await Account.decrement(
+
+    //check if the origin account has enough balance, throw an error otherwise
+    const account = await Account.findOne({
+        where: { accountNumber: accountNumber },
+    });
+    const newBalance = account.balance - amount;
+    if(newBalance < 0) {
+        throw new Error("Not enough funds");
+    }
+
+    await Account.decrement(
         { balance: amount },
         { where: { accountNumber: accountNumber } }
     );
