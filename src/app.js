@@ -10,7 +10,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-sequelize.sync()
+sequelize.sync();
+// sequelize.sync({force: true});
 
 app.use("/users", userRoutes);
 app.use("/transactions", transactionRoutes);

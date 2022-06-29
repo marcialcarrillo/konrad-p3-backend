@@ -4,41 +4,37 @@ const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 const { Op } = require("sequelize");
 
-// const getAllTransactions = async (accountNumber) => {
-//     const transactions = await Transaction.findAll();
+const getAllTransactions = async () => {
+    const transactions = await Transaction.findAll();
 
-//     return transactions;
-// };
+    return transactions;
+};
 
-// const getTransactionsByAccNumber = async (accountNumber) => {
-//     const transactions = await Transaction.findAll({
-//         where: {
-//             [Op.or]: [
-//                 { originAccount: accountNumber },
-//                 { externalOriginAccount: accountNumber },
-//                 { destinationAccount: accountNumber },
-//             ],
-//         },
-//     });
+const getTransactionsByAccNumber = async (accountNumber) => {
+    const transactions = await Transaction.findAll({
+        where: {
+            [Op.or]: [
+                { originAccount: accountNumber },
+                { destinationAccount: accountNumber },
+            ],
+        },
+    });
 
-//     return transactions;
-// };
+    return transactions;
+};
 
-// const addTransaction = async (body) => {
-//     //hash the password
-//     const hash = bcrypt.hashSync(body.password, saltRounds);
+const addTransaction = async (body) => {
+    //add the transaction to the database
+    const newTransaction = await Transaction.create({
+        originAccount: body.originAccount,
+        originAccountType: body.originAccountType,
+        currency: body.currency,
+        transferAmount: body.transferAmount,
+        destinationAccount: body.destinationAccount,
+    });
 
-//     //add the transaction to the database
-//     const newTransaction = await Transaction.create({
-//         originAccount: body.originAccount,
-//         externalOriginAccount: body.externalOriginAccount,
-//         currency: body.currency,
-//         transferAmount: body.transferAmount,
-//         destinationAccount: body.destinationAccount,
-//     });
-
-//     return newTransaction;
-// };
+    return newTransaction;
+};
 
 // const addTransactionAndAccount = async (body) => {
 //     //hash the password
@@ -88,9 +84,9 @@ const { Op } = require("sequelize");
 // };
 
 module.exports = {
-    // findTransaction,
-    // getTransactions,
-    // addTransaction,
+    getAllTransactions,
+    getTransactionsByAccNumber,
+    addTransaction,
     // deleteTransaction,
     // loginTransaction,
     // addTransactionAndAccount,
