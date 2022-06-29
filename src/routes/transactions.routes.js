@@ -5,7 +5,7 @@ const {
     findTransaction,
     getTransactions,
     makeTransaction,
-} = require("../services/tractions.service");
+} = require("../services/transactions.service");
 
 transactionRouter
     .get(async (req, res, next) => {

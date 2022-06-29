@@ -6,13 +6,11 @@ const Transaction = sequelize.define("Transaction", {
     // Model attributes are defined here
     originAccount: {
         type: DataTypes.STRING,
-        references: {
-            model: Account,
-            key: "iban",
-        },
     },
-    externalOriginAccount: {
-        type: DataTypes.STRING,
+    originAccountType: {
+        type: DataTypes.ENUM,
+        allowNull: false,
+        values: ["Internal", "External"]
     },
     currency: {
         type: DataTypes.ENUM,
@@ -26,17 +24,7 @@ const Transaction = sequelize.define("Transaction", {
     destinationAccount: {
         type: DataTypes.STRING,
         allowNull: false,
-        references: {
-            model: Account,
-            key: "iban",
-        },
-    },
-    timeStamp: {
-        type: DataTypes.DATETIME,
-        defaultValue: DataTypes.NOW,
     },
 });
-
-Transaction.sync();
 
 module.exports = Transaction;

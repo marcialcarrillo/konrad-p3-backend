@@ -75,6 +75,7 @@ const Account = sequelize.define(
 );
 
 // Declare relationships
+//TODO: move to APP
 const UserAccAssociation = User.hasMany(Account, { as: 'accounts' });
 Account.belongsTo(User);
 
