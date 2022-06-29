@@ -18,8 +18,6 @@ const payBill = async (email, serviceName) => {
 const createBills = async (email) => {
     const randomServices = getRandomServices(email);
 
-    console.log(randomServices);
-    
     const bills = await Bill.bulkCreate(randomServices);
 
     return bills;
