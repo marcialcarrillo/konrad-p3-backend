@@ -7,10 +7,10 @@ const Transaction = sequelize.define("Transaction", {
     originAccount: {
         type: DataTypes.STRING,
     },
-    originAccountType: {
+    transactionType: {
         type: DataTypes.ENUM,
         allowNull: false,
-        values: ["Internal", "External"]
+        values: ["Internal", "External", "Service"]
     },
     currency: {
         type: DataTypes.ENUM,

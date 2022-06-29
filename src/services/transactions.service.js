@@ -27,7 +27,7 @@ const addTransaction = async (body) => {
     //add the transaction to the database
     const newTransaction = await Transaction.create({
         originAccount: body.originAccount,
-        originAccountType: body.originAccountType,
+        transactionType: body.transactionType,
         currency: body.currency,
         transferAmount: body.transferAmount,
         destinationAccount: body.destinationAccount,

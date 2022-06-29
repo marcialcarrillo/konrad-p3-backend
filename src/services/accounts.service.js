@@ -12,7 +12,6 @@ const getAccounts = async () => {
 };
 
 const addAccount = async (body) => {
-
     const newAccount = await Account.create({
         accountOwnerId: body.idNumber,
         accountCountry: body.accountCountry,
@@ -24,8 +23,29 @@ const addAccount = async (body) => {
 };
 
 const deleteAccount = async (idNumber) => {
-  const deletedAccount = await Account.destroy({ where: { accountOwnerId: idNumber } });
-  return deletedAccount;
+    const deletedAccount = await Account.destroy({
+        where: { accountOwnerId: idNumber },
+    });
+    return deletedAccount;
+};
+
+const addBalance = async (iban, amount) => {
+    const account = await Account.findOne({ where: { iban: iban } });
+    account.balance += amount;
+    await account.save();
+    return account;
+};
+
+const deductBalance = async (iban, amount) => {
+    const account = await Account.findOne({ where: { iban: iban } });
+    if (account.balance >= amount) {
+        account.balance -= amount;
+        await account.save();
+        return account;
+    }
+    else{
+        throw new Error("Not enough funds");
+    }
 };
 
 module.exports = {
@@ -33,4 +53,6 @@ module.exports = {
     getAccounts,
     addAccount,
     deleteAccount,
+    addBalance,
+    deductBalance,
 };
