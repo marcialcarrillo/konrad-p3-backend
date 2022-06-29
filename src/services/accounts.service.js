@@ -1,4 +1,4 @@
-const { Account } = require("../../archive/users.model");
+const { Account } = require("../models/users.model");
 
 const findAccount = async (query) => {
     let account = await Account.findAll(query);
@@ -29,23 +29,33 @@ const deleteAccount = async (idNumber) => {
     return deletedAccount;
 };
 
-const addBalance = async (iban, amount) => {
-    const account = await Account.findOne({ where: { iban: iban } });
-    account.balance += amount;
-    await account.save();
+const addBalance = async (accountNumber, amount) => {
+    // const account = await Account.findOne({ where: { accountNumber: accountNumber } });
+    // const newBalance = account.balance + amount;
+    // account.balance = newBalance;
+    // // account.balance += Number(amount);
+    // await account.save();
+    const account = await Account.increment(
+        { balance: amount },
+        { where: { accountNumber: accountNumber } }
+    );
     return account;
 };
 
-const deductBalance = async (iban, amount) => {
-    const account = await Account.findOne({ where: { iban: iban } });
-    if (account.balance >= amount) {
-        account.balance -= amount;
-        await account.save();
-        return account;
-    }
-    else{
-        throw new Error("Not enough funds");
-    }
+const deductBalance = async (accountNumber, amount) => {
+    // const account = await Account.findOne({ where: { accountNumber: accountNumber } });
+    // if (account.balance >= Number(amount)) {
+    //     account.balance -= Number(amount);
+    //     await account.save();
+    //     return account;
+    // } else {
+    //     throw new Error("Not enough funds");
+    // }
+    const account = await Account.decrement(
+        { balance: amount },
+        { where: { accountNumber: accountNumber } }
+    );
+    return account;
 };
 
 module.exports = {

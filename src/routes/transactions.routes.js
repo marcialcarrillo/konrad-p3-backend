@@ -7,6 +7,12 @@ const {
     addTransaction,
 } = require("../services/transactions.service");
 
+const {
+    handleExternalTransaction,
+    handleInternalTransaction,
+    handleServiceTransaction,
+} = require("../services/handleTransaction.service");
+
 transactionRouter
     .route("/")
     .get(async (req, res, next) => {
@@ -19,7 +25,21 @@ transactionRouter
     })
     .post(async (req, res, next) => {
         try {
-            const transactionAdded = await addTransaction(req.body);
+            let transactionAdded = {};
+            switch (req.body.transactionType) {
+                case "External":
+                    transactionAdded = await handleExternalTransaction(req.body);
+                    break;
+                case "Internal":
+                    transactionAdded = await handleInternalTransaction(req.body);
+                    break;
+                case "Service":
+                    transactionAdded = await handleServiceTransaction(req.body);
+                    break;
+
+                default:
+                    break;
+            }
             res.status(201).send(transactionAdded);
         } catch (err) {
             next(err);

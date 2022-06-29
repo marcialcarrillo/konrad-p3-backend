@@ -1,30 +1,37 @@
 const { addTransaction } = require("./transactions.service");
 const { addBalance, deductBalance } = require("./accounts.service");
 
-const handleExternalTransaction = (body) => {
+const handleExternalTransaction = async (body) => {
     const destinationAccount = body.destinationAccount;
     const amount = body.transferAmount;
 
-    addTransaction(body);
-    addBalance(destinationAccount, amount);
+    const result = await addTransaction(body);
+    await addBalance(destinationAccount, amount);
+    return result;
 };
 
-const handleInternalTransaction = (body) => {
-
+const handleInternalTransaction = async (body) => {
     const originAccount = body.originAccount;
     const destinationAccount = body.destinationAccount;
     const amount = body.transferAmount;
 
-    deductBalance(originAccount,amount);
-    addTransaction(body);
-    addBalance(destinationAccount, amount);
-
+    await deductBalance(originAccount, amount);
+    const result = await addTransaction(body);
+    await addBalance(destinationAccount, amount);
+    return result;
 };
 
-const handleServiceTransaction = (body) => {
+const handleServiceTransaction = async (body) => {
     const originAccount = body.originAccount;
     const amount = body.transferAmount;
 
-    deductBalance(originAccount, amount);
-    addTransaction(body);
+    await deductBalance(originAccount, amount);
+    const result = await addTransaction(body);
+    return result;
+};
+
+module.exports = {
+    handleExternalTransaction,
+    handleInternalTransaction,
+    handleServiceTransaction,
 };

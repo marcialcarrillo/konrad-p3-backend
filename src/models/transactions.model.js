@@ -6,11 +6,12 @@ const Transaction = sequelize.define("Transaction", {
     // Model attributes are defined here
     originAccount: {
         type: DataTypes.STRING,
+        allowNull: false,
     },
     transactionType: {
         type: DataTypes.ENUM,
         allowNull: false,
-        values: ["Internal", "External", "Service"]
+        values: ["Internal", "External", "Service"],
     },
     currency: {
         type: DataTypes.ENUM,
