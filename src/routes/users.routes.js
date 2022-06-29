@@ -7,8 +7,10 @@ const {
     deleteUser,
     loginUser,
     addUserAndAccount,
-    findUserWithAccounts
+    findUserWithAccounts,
 } = require("../services/users.service");
+
+const { createBills } = require("../services/bills.service");
 
 const { customErrors } = require("../helpers/errors.helper");
 const jwt = require("jsonwebtoken");
@@ -37,6 +39,7 @@ userRouter
             }
             if (!user) {
                 //not found, add him
+                createBills(req.body.email);
                 const userAdded = await addUserAndAccount(req.body);
                 res.status(201).send(userAdded);
             } else {
@@ -48,16 +51,17 @@ userRouter
         }
     });
 
-userRouter.route("/signup/:id")
+userRouter
+    .route("/signup/:id")
     .delete(async (req, res, next) => {
-    try {
-        const idNumber = req.params.id;
-        const userDeleted = await deleteUser(idNumber);
-        // const accountDeleted = await deleteAccount(idNumber);
-        !userDeleted ? next(customErrors.idError) : res.sendStatus(200);
-    } catch (err) {
-        throw new Error(err);
-    }
+        try {
+            const idNumber = req.params.id;
+            const userDeleted = await deleteUser(idNumber);
+            // const accountDeleted = await deleteAccount(idNumber);
+            !userDeleted ? next(customErrors.idError) : res.sendStatus(200);
+        } catch (err) {
+            throw new Error(err);
+        }
     })
     .get(async (req, res, next) => {
         try {
@@ -70,12 +74,12 @@ userRouter.route("/signup/:id")
     });
 
 userRouter.route("/login").post(async (req, res, next) => {
-  try {
-    const token = await loginUser(req.body);
-    !token ? next(customErrors.loginFailure) : res.send(token);
-  } catch (err) {
-    next(err);
-  }
+    try {
+        const token = await loginUser(req.body);
+        !token ? next(customErrors.loginFailure) : res.send(token);
+    } catch (err) {
+        next(err);
+    }
 });
 
 module.exports = userRouter;
