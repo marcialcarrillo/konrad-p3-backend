@@ -3,6 +3,7 @@ let app = express();
 const cors = require("cors");
 const userRoutes = require("./routes/users.routes");
 const transactionRoutes = require("./routes/transactions.routes");
+const billRoutes = require("./routes/bills.routes");
 const uploadRoutes = require("./routes/upload.routes");
 const sequelize = require("./config/sequelize.config");
 
@@ -18,6 +19,7 @@ sequelize.sync();
 app.use("/users", userRoutes);
 app.use("/transactions", transactionRoutes);
 app.use("/uploads", uploadRoutes);
+app.use("/bills", billRoutes);
 app.use(errorHandler);
 
 module.exports = app;

@@ -1,5 +1,6 @@
 const { addTransaction } = require("./transactions.service");
 const { addBalance, deductBalance } = require("./accounts.service");
+const { payBill } = require("./bills.service");
 
 const handleExternalTransaction = async (body) => {
     const destinationAccount = body.destinationAccount;
@@ -26,6 +27,7 @@ const handleServiceTransaction = async (body) => {
     const amount = body.transferAmount;
 
     await deductBalance(originAccount, amount);
+    await payBill(body.email, body.destinationAccount);
     const result = await addTransaction(body);
     return result;
 };

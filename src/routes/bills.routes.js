@@ -7,13 +7,28 @@ const {
     payBill,
     createBills,
 } = require("../services/bills.service");
+
 const { customErrors } = require("../helpers/errors.helper");
 
-billRouter.route("/").get(async (req, res, next) => {
+// billRouter.route("/").delete(async (req, res, next) => {
+//     try {
+//         const email = req.body.email;
+//         const serviceName = req.body.serviceName;
+//         const billPaid = await payBill(email, serviceName);
+//         res.send(billPaid);
+//     } catch (err) {
+//         next(err);
+//     }
+// });
+
+billRouter.route("/:email").get(async (req, res, next) => {
     try {
-        const accounts = await getAccounts();
-        res.send(accounts);
+        const email = req.params.email;
+        const bills = await findBills(email);
+        res.send(bills);
     } catch (err) {
         next(err);
     }
 });
+
+module.exports = billRouter;
