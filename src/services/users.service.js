@@ -90,6 +90,7 @@ const saveImagePath = async (email, imagePath) => {
             where: { email: email },
         }
     );
+    return imagePath;
 };
 
 module.exports = {

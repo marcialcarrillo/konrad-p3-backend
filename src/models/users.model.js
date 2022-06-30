@@ -16,6 +16,7 @@ const User = sequelize.define("User", {
     },
     idImage: {
         type: DataTypes.STRING,
+        allowNull: false,
     },
     incomeSource: {
         type: DataTypes.ENUM,

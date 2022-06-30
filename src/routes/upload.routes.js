@@ -14,19 +14,15 @@ uploadRouter
     .get(async (req, res, next) => {
         const filename = req.params.id;
         res.sendFile(`uploads/${filename}`, { root: "." });
-        // res.sendFile(`uploads/${filename}`, { root: "." });
-        // console.log("in uploads:", req.file.filename);
-        // saveImagePath(email, req.file.filename);
-        // res.send("Profile Image uploaded!");
+
     })
     .post(upload.single("profileImage"), async (req, res, next) => {
-        const email = req.params.id;
-        console.log("in uploads:", req.file.filename);
-        saveImagePath(
-            email,
-            `http://127.0.0.1:3002/uploads/${req.file.filename}`
-        );
-        res.send("Profile Image uploaded!");
+        // const email = req.params.id;
+        // const result = await saveImagePath(
+        //     email,
+        //     `http://127.0.0.1:3002/uploads/${req.file.filename}`
+        // );
+        res.send(`http://127.0.0.1:3002/uploads/${req.file.filename}`);
     });
 
 module.exports = uploadRouter;
