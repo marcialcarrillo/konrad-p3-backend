@@ -9,7 +9,10 @@ const findUser = async (query) => {
 };
 
 const findUserWithAccounts = async (id) => {
-    let user = await User.findOne({ where: { idNumber: id }, include: UserAccAssociation });
+    let user = await User.findOne({
+        where: { idNumber: id },
+        include: UserAccAssociation,
+    });
     return user;
 };
 
@@ -47,7 +50,7 @@ const addUserAndAccount = async (body) => {
             incomeSource: body.incomeSource,
             email: body.email,
             password: hash,
-            accounts: body.accounts ,
+            accounts: body.accounts,
         },
         {
             include: [UserAccAssociation],
@@ -59,13 +62,16 @@ const addUserAndAccount = async (body) => {
 const loginUser = async (body) => {
     const email = body.email;
     const password = body.password;
-    let user = await User.findOne({ where: { email: email }, include: UserAccAssociation });
+    let user = await User.findOne({
+        where: { email: email },
+        include: UserAccAssociation,
+    });
     const hash = user.password;
     const match = await bcrypt.compare(password, hash);
     // const accounts = user.accounts.map(acc => acc.iban)
     if (match) {
         //TODO: use env variables
-        let token = jwt.sign({ email: email}, "not_hard_coded");
+        let token = jwt.sign({ email: email }, "not_hard_coded");
         return token;
     } else {
         return null;
@@ -77,6 +83,15 @@ const deleteUser = async (idNumber) => {
     return deletedUser;
 };
 
+const saveImagePath = async (email, imagePath) => {
+    await User.update(
+        { idImage: imagePath },
+        {
+            where: { email: email },
+        }
+    );
+};
+
 module.exports = {
     findUser,
     getUsers,
@@ -84,5 +99,6 @@ module.exports = {
     deleteUser,
     loginUser,
     addUserAndAccount,
-    findUserWithAccounts
+    findUserWithAccounts,
+    saveImagePath
 };

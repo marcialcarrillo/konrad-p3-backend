@@ -2,36 +2,43 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/sequelize.config");
 // const Account = require("./accounts.model");
 
-const User = sequelize.define(
-    "User",
-    {
-        // Model attributes are defined here
-        fullName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        idNumber: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            unique: true,
-            primaryKey: true,
-        },
-        incomeSource: {
-            type: DataTypes.ENUM,
-            allowNull: false,
-            values: ["Employed / Salaried", "Business Owner", "Self-Employed", "Retired", "Investor", "Other"],
-        },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-        },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        }
-    }
-);
+const User = sequelize.define("User", {
+    // Model attributes are defined here
+    fullName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    idNumber: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: true,
+        primaryKey: true,
+    },
+    idImage: {
+        type: DataTypes.STRING,
+    },
+    incomeSource: {
+        type: DataTypes.ENUM,
+        allowNull: false,
+        values: [
+            "Employed / Salaried",
+            "Business Owner",
+            "Self-Employed",
+            "Retired",
+            "Investor",
+            "Other",
+        ],
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+});
 
 const Account = sequelize.define(
     "Account",
