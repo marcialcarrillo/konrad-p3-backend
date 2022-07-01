@@ -14,6 +14,7 @@ const { createBills } = require("../services/bills.service");
 
 const { customErrors } = require("../helpers/errors.helper");
 const jwt = require("jsonwebtoken");
+const authenticateUser = require("../middleware/authorization.middleware");
 const saltRounds = 10;
 
 userRouter
@@ -51,35 +52,20 @@ userRouter
         }
     });
 
-userRouter
-    .route("/signup/:id")
-    .delete(async (req, res, next) => {
-        try {
-            const idNumber = req.params.id;
-            const userDeleted = await deleteUser(idNumber);
-            // const accountDeleted = await deleteAccount(idNumber);
-            !userDeleted ? next(customErrors.idError) : res.sendStatus(200);
-        } catch (err) {
-            throw new Error(err);
-        }
-    })
-    .get(async (req, res, next) => {
-        try {
-            const id = req.params.id;
-            let user = await findUserWithAccounts(id);
-            !user ? next(customErrors.idError) : res.send(user);
-        } catch (err) {
-            throw new Error(err);
-        }
-    });
-
-userRouter.route("/login").post(async (req, res, next) => {
+    
+    userRouter.route("/login").post(async (req, res, next) => {
     try {
-        
         let user = await findUser({ where: { email: req.body.email } });
         if (user) {
             const token = await loginUser(req.body);
-            !token ? next(customErrors.loginFailure) : res.send({token: token});
+            !token
+                ? next(customErrors.loginFailure)
+                : res
+                      .cookie("access_token", token, {
+                          httpOnly: true,
+                          secure: process.env.NODE_ENV === "production",
+                        })
+                      .send({ token: token });
         } else {
             next(customErrors.loginFailure);
         }
@@ -87,5 +73,43 @@ userRouter.route("/login").post(async (req, res, next) => {
         next(err);
     }
 });
+
+// userRouter.get("/logout", authenticateUser, async (req, res) => {
+    //     return res
+    //         .clearCookie("access_token")
+    //         .json({ message: "Successfully logged out 😏 🍀" });
+    // });
+    
+    userRouter
+    .use(authenticateUser)
+    .route("/logout")
+    .get(async (req, res, next) => {
+        return res
+        .clearCookie("access_token")
+        .json({ message: "Successfully logged out 😏 🍀" });
+    });
+    
+    userRouter
+        .use(authenticateUser)
+        .route("/")
+        .delete(async (req, res, next) => {
+            try {
+                const idNumber = req.params.id;
+                const userDeleted = await deleteUser(idNumber);
+                // const accountDeleted = await deleteAccount(idNumber);
+                !userDeleted ? next(customErrors.idError) : res.sendStatus(200);
+            } catch (err) {
+                throw new Error(err);
+            }
+        })
+        .get(async (req, res, next) => {
+            try {
+                const email = req.userEmail;
+                let user = await findUserWithAccounts(email);
+                !user ? next(customErrors.idError) : res.send(user);
+            } catch (err) {
+                throw new Error(err);
+            }
+        });
 
 module.exports = userRouter;

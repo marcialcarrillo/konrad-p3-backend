@@ -22,7 +22,14 @@ const idError = {
 const authError = {
   name: "authError",
   message: "The credentials provided were not valid",
-  code: 400,
+  code: 403,
+};
+
+//missing cookie
+const authMissing = {
+  name: "authMissing",
+  message: "The user needs to be authenticated",
+  code: 403,
 };
 
 const contTypeError = {
@@ -57,6 +64,7 @@ customErrors.contTypeError = contTypeError;
 customErrors.usernameTaken = userTaken;
 customErrors.loginFailure = loginFailure;
 customErrors.incorrectCredentials = incorrectCredentials;
+customErrors.authMissing = authMissing;
 
 module.exports = {
     formatError,

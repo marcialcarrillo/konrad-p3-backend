@@ -8,9 +8,9 @@ const findUser = async (query) => {
     return user;
 };
 
-const findUserWithAccounts = async (id) => {
+const findUserWithAccounts = async (email) => {
     let user = await User.findOne({
-        where: { idNumber: id },
+        where: { email: email },
         include: UserAccAssociation,
     });
     return user;
