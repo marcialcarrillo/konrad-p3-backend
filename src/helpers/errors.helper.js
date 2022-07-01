@@ -37,6 +37,12 @@ const userTaken = {
   code: 400,
 };
 
+const incorrectCredentials = {
+    name: "incorrectCredentials",
+    message: "The credentials provided were incorrect",
+    code: 400,
+};
+
 //we don't want to be precise about whether the username or password failed, for security reasons.
 const loginFailure = {
   name: "loginFailure",
@@ -50,10 +56,11 @@ customErrors.authError = authError;
 customErrors.contTypeError = contTypeError;
 customErrors.usernameTaken = userTaken;
 customErrors.loginFailure = loginFailure;
+customErrors.incorrectCredentials = incorrectCredentials;
 
 module.exports = {
-  formatError,
-  isValidationError,
-  isContentType,
-  customErrors,
+    formatError,
+    isValidationError,
+    isContentType,
+    customErrors,
 };

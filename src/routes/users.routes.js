@@ -75,8 +75,14 @@ userRouter
 
 userRouter.route("/login").post(async (req, res, next) => {
     try {
-        const token = await loginUser(req.body);
-        !token ? next(customErrors.loginFailure) : res.send(token);
+        
+        let user = await findUser({ where: { email: req.body.email } });
+        if (user) {
+            const token = await loginUser(req.body);
+            !token ? next(customErrors.loginFailure) : res.send({token: token});
+        } else {
+            next(customErrors.loginFailure);
+        }
     } catch (err) {
         next(err);
     }
