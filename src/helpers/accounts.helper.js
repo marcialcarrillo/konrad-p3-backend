@@ -1,11 +1,9 @@
-const { BIGINT } = require("sequelize");
-
 const ibanToAccNumber = (iban) => {
-const slicedIban = iban.slice(2);
-//TODO: use env variables
-const account = BigInt(slicedIban) - BigInt(41015201001092741156);
-return account;
-}
+    const slicedIban = iban.slice(2);
+    //TODO: use env variables
+    const account = BigInt(slicedIban) - BigInt(41015201001092741156);
+    return Number(account);
+};
 
 const accNumberToIban = (accNumber) => {
     //TODO: use env variables
@@ -14,5 +12,4 @@ const accNumberToIban = (accNumber) => {
     return iban;
 };
 
-
-module.exports = {ibanToAccNumber}
+module.exports = { ibanToAccNumber, accNumberToIban };

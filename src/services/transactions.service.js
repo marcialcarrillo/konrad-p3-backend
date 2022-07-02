@@ -23,14 +23,14 @@ const getTransactionsByAccNumber = async (accountNumber) => {
     return transactions;
 };
 
-const addTransaction = async (body) => {
+const addTransaction = async (body, destinationAccount) => {
     //add the transaction to the database
     const newTransaction = await Transaction.create({
         originAccount: body.originAccount,
         transactionType: body.transactionType,
         currency: body.currency,
         transferAmount: body.transferAmount,
-        destinationAccount: body.destinationAccount,
+        destinationAccount: destinationAccount,
     });
 
     return newTransaction;

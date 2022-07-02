@@ -73,12 +73,6 @@ userRouter
         next(err);
     }
 });
-
-// userRouter.get("/logout", authenticateUser, async (req, res) => {
-    //     return res
-    //         .clearCookie("access_token")
-    //         .json({ message: "Successfully logged out 😏 🍀" });
-    // });
     
     userRouter
     .use(authenticateUser)
@@ -86,7 +80,7 @@ userRouter
     .get(async (req, res, next) => {
         return res
         .clearCookie("access_token")
-        .json({ message: "Successfully logged out 😏 🍀" });
+        .json({ message: "Successfully logged out" });
     });
     
     userRouter

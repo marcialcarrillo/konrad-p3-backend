@@ -12,8 +12,10 @@ const {
     handleInternalTransaction,
     handleServiceTransaction,
 } = require("../services/handleTransaction.service");
+const authenticateUser = require("../middleware/authorization.middleware");
 
 transactionRouter
+.use(authenticateUser)
     .route("/")
     .get(async (req, res, next) => {
         try {
@@ -28,13 +30,22 @@ transactionRouter
             let transactionAdded = {};
             switch (req.body.transactionType) {
                 case "External":
-                    transactionAdded = await handleExternalTransaction(req.body);
+                    transactionAdded = await handleExternalTransaction(
+                        req.body,
+                        req.userEmail
+                    );
                     break;
                 case "Internal":
-                    transactionAdded = await handleInternalTransaction(req.body);
+                    transactionAdded = await handleInternalTransaction(
+                        req.body,
+                        req.userEmail
+                    );
                     break;
                 case "Service":
-                    transactionAdded = await handleServiceTransaction(req.body);
+                    transactionAdded = await handleServiceTransaction(
+                        req.body,
+                        req.userEmail
+                    );
                     break;
 
                 default:
