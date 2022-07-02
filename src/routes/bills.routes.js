@@ -9,6 +9,7 @@ const {
 } = require("../services/bills.service");
 
 const { customErrors } = require("../helpers/errors.helper");
+const authenticateUser = require("../middleware/authorization.middleware");
 
 // billRouter.route("/").delete(async (req, res, next) => {
 //     try {
@@ -21,14 +22,17 @@ const { customErrors } = require("../helpers/errors.helper");
 //     }
 // });
 
-billRouter.route("/:email").get(async (req, res, next) => {
-    try {
-        const email = req.params.email;
-        const bills = await findBills(email);
-        res.send(bills);
-    } catch (err) {
-        next(err);
-    }
-});
+billRouter
+    .use(authenticateUser)
+    .route("/")
+    .get(async (req, res, next) => {
+        try {
+            const email = req.userEmail;
+            const bills = await findBills(email);
+            res.send(bills);
+        } catch (err) {
+            next(err);
+        }
+    });
 
 module.exports = billRouter;

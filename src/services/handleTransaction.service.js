@@ -33,7 +33,7 @@ const handleServiceTransaction = async (body, email) => {
     const amount = body.transferAmount;
 
     await deductBalance(originAccount, amount);
-    await payBill(body.email, body.destinationAccount);
+    await payBill(email, body.destinationAccount);
     await addTransaction(body, body.destinationAccount);
     const result = await findUserWithAccounts(email);
     return result;
