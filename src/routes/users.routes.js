@@ -40,9 +40,10 @@ userRouter
             }
             if (!user) {
                 //not found, add him
+                await addUserAndAccount(req.body);
                 createBills(req.body.email);
-                const userAdded = await addUserAndAccount(req.body);
-                res.status(201).send(userAdded);
+                const result = await findUserWithAccounts(req.body.email);
+                res.status(201).send(result);
             } else {
                 next(customErrors.userTaken);
             }

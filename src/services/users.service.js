@@ -1,7 +1,16 @@
-const { User, Account, UserAccAssociation } = require("../models/users.model");
+// const { User } = require("../models2/users.model");
+const { Account } = require("../models2/accounts.model");
+const {
+    sequelize,
+    UserAccAssociation,
+    UserBillAssociation,
+} = require("../sequelize/index");
+
+// const { User, Account, UserAccAssociation } = require("../models/users.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
+const User = sequelize.models.User;
 
 const findUser = async (query) => {
     let user = await User.findOne(query);
@@ -10,8 +19,18 @@ const findUser = async (query) => {
 
 const findUserWithAccounts = async (email) => {
     let user = await User.findOne({
+        attributes: { exclude: ["password", "UserEmail"] },
         where: { email: email },
-        include: UserAccAssociation,
+        include: [
+            {
+                association: UserAccAssociation,
+                attributes: { exclude: ["UserEmail"] },
+            },
+            {
+                association: UserBillAssociation,
+                attributes: { exclude: ["UserEmail"] },
+            },
+        ],
     });
     return user;
 };
@@ -102,5 +121,5 @@ module.exports = {
     loginUser,
     addUserAndAccount,
     findUserWithAccounts,
-    saveImagePath
+    saveImagePath,
 };

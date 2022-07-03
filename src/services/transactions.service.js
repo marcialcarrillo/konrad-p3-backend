@@ -1,8 +1,8 @@
-const { Transaction } = require("../models/transactions.model");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const saltRounds = 10;
+const { sequelize } = require("../sequelize/index");
+
+// const { Transaction } = require("../models/transactions.model");
 const { Op } = require("sequelize");
+const Transaction = sequelize.models.Transaction;
 
 const getAllTransactions = async () => {
     const transactions = await Transaction.findAll();

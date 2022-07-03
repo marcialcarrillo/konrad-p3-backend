@@ -1,4 +1,8 @@
-const { Account } = require("../models/users.model");
+const { sequelize } = require("../sequelize/index");
+
+// const { Account } = require("../models/users.model");
+
+const Account = sequelize.models.Account;
 
 const findAccount = async (query) => {
     let account = await Account.findAll(query);
@@ -38,13 +42,12 @@ const addBalance = async (accountNumber, amount) => {
 };
 
 const deductBalance = async (accountNumber, amount) => {
-
     //check if the origin account has enough balance, throw an error otherwise
     const account = await Account.findOne({
         where: { accountNumber: accountNumber },
     });
     const newBalance = account.balance - amount;
-    if(newBalance < 0) {
+    if (newBalance < 0) {
         throw new Error("Not enough funds");
     }
 

@@ -6,7 +6,8 @@ const userRoutes = require("./routes/users.routes");
 const transactionRoutes = require("./routes/transactions.routes");
 const billRoutes = require("./routes/bills.routes");
 const uploadRoutes = require("./routes/upload.routes");
-const sequelize = require("./config/sequelize.config");
+// const sequelize = require("./config/sequelize.config");
+const { sequelize } = require("./sequelize/index");
 
 const { errorHandler } = require("./middleware/errorHandling.middleware");
 
@@ -18,9 +19,6 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-sequelize.sync();
-// sequelize.sync({force: true});
 
 app.use(cookieParser());
 app.use("/users", userRoutes);
