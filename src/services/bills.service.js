@@ -1,9 +1,6 @@
 const { sequelize } = require("../sequelize/index");
+const { getRandomServices } = require("../helpers/services.helper");
 
-
-// const { Bill } = require("../models/bills.model");
-const { getRandomServices } = require("../helpers2/services.helper");
-// const { getRandomServices } = require("../helpers/services.helper");
 const Bill = sequelize.models.Bill;
 
 const findBills = async (email) => {

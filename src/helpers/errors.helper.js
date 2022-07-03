@@ -57,6 +57,12 @@ const loginFailure = {
   code: 400,
 };
 
+const accNotFound = {
+    name: "accNotFound",
+    message: "couldn't find the account number",
+    code: 400,
+};
+
 //Inject the custom errors to our obj handler
 customErrors.idError = idError;
 customErrors.authError = authError;

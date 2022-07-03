@@ -57,15 +57,16 @@ transactionRouter
         }
     });
 
-// transactionRouter.route("/:account").delete(async (req, res, next) => {
-//     try {
-//         const account = req.params.account;
-//         const transactionDeleted = await deleteTransaction(idNumber);
-//         // const accountDeleted = await deleteAccount(idNumber);
-//         !transactionDeleted ? next(customErrors.idError) : res.sendStatus(200);
-//     } catch (err) {
-//         throw new Error(err);
-//     }
-// });
+transactionRouter.route("/:account").get(async (req, res, next) => {
+    try {
+        const account = req.params.account;
+        const transactions = await getTransactionsByAccNumber(account);
+        // const accountDeleted = await deleteAccount(idNumber);
+        // !transactions ? next(customErrors.idError) : res.send(transactions);
+        res.send(transactions);
+    } catch (err) {
+        throw new Error(err);
+    }
+});
 
 module.exports = transactionRouter;

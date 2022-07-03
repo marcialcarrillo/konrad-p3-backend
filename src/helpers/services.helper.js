@@ -25,9 +25,9 @@ const getRandomServices = (email) => {
     
     //create the services to be used in a bulk create
     const servicesObjects = slicedServices.map((service) => ({
-        debtorEmail: email,
         serviceName: service,
         amountToPay: Math.random() * maxAmountToPay,
+        UserEmail: email,
     }));
 
     return servicesObjects;

@@ -1,15 +1,14 @@
 const { Sequelize } = require("sequelize");
-const { associate } = require("./setup");
 
 const path = "mysql://root:admin@localhost:3306/bank2";
 
 const sequelize = new Sequelize(path, { logging: false });
 
 const modelDefiners = [
-    require("../models2/users.model"),
-    require("../models2/accounts.model"),
-    require("../models2/bills.model"),
-    require("../models2/transactions.model"),
+    require("../models/users.model"),
+    require("../models/accounts.model"),
+    require("../models/bills.model"),
+    require("../models/transactions.model"),
 ];
 
 for (const modelDefiner of modelDefiners) {

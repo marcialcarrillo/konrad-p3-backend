@@ -1,7 +1,5 @@
 const { sequelize } = require("../sequelize/index");
 
-// const { Account } = require("../models/users.model");
-
 const Account = sequelize.models.Account;
 
 const findAccount = async (query) => {

@@ -1,6 +1,4 @@
 const { sequelize } = require("../sequelize/index");
-
-// const { Transaction } = require("../models/transactions.model");
 const { Op } = require("sequelize");
 const Transaction = sequelize.models.Transaction;
 

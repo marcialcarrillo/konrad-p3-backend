@@ -1,12 +1,9 @@
-// const { User } = require("../models2/users.model");
-const { Account } = require("../models2/accounts.model");
 const {
     sequelize,
     UserAccAssociation,
     UserBillAssociation,
 } = require("../sequelize/index");
 
-// const { User, Account, UserAccAssociation } = require("../models/users.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
