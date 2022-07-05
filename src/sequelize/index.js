@@ -4,16 +4,6 @@ const path = process.env.DBPATH;
 
 const sequelize = new Sequelize(path, { logging: false });
 
-// const sequelize = new Sequelize(
-//     "heroku_4940732d2d57a84",
-//     "bbfd823f095643",
-//     "cf42faee",
-//     {
-//         dialect: "mysql",
-//         host: "us-cdbr-east-06.cleardb.net",
-//     }
-// );
-
 const modelDefiners = [
     require("../models/users.model"),
     require("../models/accounts.model"),
