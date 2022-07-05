@@ -53,8 +53,7 @@ userRouter
         }
     });
 
-    
-    userRouter.route("/login").post(async (req, res, next) => {
+userRouter.route("/login").post(async (req, res, next) => {
     try {
         let user = await findUser({ where: { email: req.body.email } });
         if (user) {
@@ -63,9 +62,10 @@ userRouter
                 ? next(customErrors.loginFailure)
                 : res
                       .cookie("access_token", token, {
+                          sameSite: "none",
                           httpOnly: true,
                           secure: process.env.NODE_ENV === "production",
-                        })
+                      })
                       .send({ token: token });
         } else {
             next(customErrors.loginFailure);
@@ -74,37 +74,37 @@ userRouter
         next(err);
     }
 });
-    
-    userRouter
+
+userRouter
     .use(authenticateUser)
     .route("/logout")
     .get(async (req, res, next) => {
         return res
-        .clearCookie("access_token")
-        .json({ message: "Successfully logged out" });
+            .clearCookie("access_token")
+            .json({ message: "Successfully logged out" });
     });
-    
-    userRouter
-        .use(authenticateUser)
-        .route("/")
-        .delete(async (req, res, next) => {
-            try {
-                const idNumber = req.params.id;
-                const userDeleted = await deleteUser(idNumber);
-                // const accountDeleted = await deleteAccount(idNumber);
-                !userDeleted ? next(customErrors.idError) : res.sendStatus(200);
-            } catch (err) {
-                throw new Error(err);
-            }
-        })
-        .get(async (req, res, next) => {
-            try {
-                const email = req.userEmail;
-                let user = await findUserWithAccounts(email);
-                !user ? next(customErrors.idError) : res.send(user);
-            } catch (err) {
-                throw new Error(err);
-            }
-        });
+
+userRouter
+    .use(authenticateUser)
+    .route("/")
+    .delete(async (req, res, next) => {
+        try {
+            const idNumber = req.params.id;
+            const userDeleted = await deleteUser(idNumber);
+            // const accountDeleted = await deleteAccount(idNumber);
+            !userDeleted ? next(customErrors.idError) : res.sendStatus(200);
+        } catch (err) {
+            throw new Error(err);
+        }
+    })
+    .get(async (req, res, next) => {
+        try {
+            const email = req.userEmail;
+            let user = await findUserWithAccounts(email);
+            !user ? next(customErrors.idError) : res.send(user);
+        } catch (err) {
+            throw new Error(err);
+        }
+    });
 
 module.exports = userRouter;

@@ -35,13 +35,17 @@ const handleInternalTransaction = async (body, email) => {
         const amount = body.transferAmount;
 
         await deductBalance(originAccount, amount);
-        await addTransaction(body, destinationAccount);
-        
         //deduct balance if the account exists, otherwise just remove the money
         const accountFound = await findAccount(destinationAccount);
         if (accountFound) {
             await addBalance(destinationAccount, amount);
+            await addTransaction(body, destinationAccount);
         }
+        else {
+            //account not found, don't convert the number when saving it since it should already be a IBAN
+            await addTransaction(body, body.destinationAccount);
+        }
+
         const result = await findUserWithAccounts(email);
         return result;
     } else {
