@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 
-const path = "mysql://root:admin@localhost:3306/bank2";
+const path = process.env.DBPATH;
 
 const sequelize = new Sequelize(path, { logging: false });
 
