@@ -1,5 +1,6 @@
 const { addTransaction } = require("./transactions.service");
 const {
+    findAccount,
     addBalance,
     deductBalance,
     verifyAccountOwnership,
@@ -10,8 +11,14 @@ const { ibanToAccNumber } = require("../helpers/accounts.helper");
 const { customErrors } = require("../helpers/errors.helper");
 
 const handleExternalTransaction = async (body, email) => {
-    const destinationAccount = body.destinationAccount;
+    const accNumber = ibanToAccNumber(body.originAccount);
+    const originAccount = await findAccount(accNumber);
     const amount = body.transferAmount;
+    if (originAccount) {
+        await deductBalance(accNumber, amount);
+    }
+
+    const destinationAccount = body.destinationAccount;
 
     await addTransaction(body, destinationAccount);
     await addBalance(destinationAccount, amount);

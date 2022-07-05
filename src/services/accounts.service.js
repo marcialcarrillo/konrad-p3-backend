@@ -3,8 +3,8 @@ const { customErrors } = require("../helpers/errors.helper");
 
 const Account = sequelize.models.Account;
 
-const findAccount = async (query) => {
-    let account = await Account.findAll(query);
+const findAccount = async (accountNumber) => {
+    const account = await Account.findByPk(accountNumber);
     return account;
 };
 
@@ -48,12 +48,11 @@ const addBalance = async (accountNumber, amount) => {
 
 const deductBalance = async (accountNumber, amount) => {
     //check if the origin account has enough balance, throw an error otherwise
-    const account = await Account.findOne({
-        where: { accountNumber: accountNumber },
-    });
+    const account = Account.findByPk(accountNumber);
+    if(!account) {throw customErrors.accNotFound};
     const newBalance = account.balance - amount;
     if (newBalance < 0) {
-        throw new Error("Not enough funds");
+        throw customErrors.notEnoughFunds;
     }
 
     await Account.decrement(

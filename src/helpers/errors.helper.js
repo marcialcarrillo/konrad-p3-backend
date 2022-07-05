@@ -69,6 +69,12 @@ const accNotOfCustomer = {
     code: 400,
 };
 
+const notEnoughFunds = {
+    name: "notEnoughFunds",
+    message: "there are not enough funds in the account",
+    code: 400,
+};
+
 //Inject the custom errors to our obj handler
 customErrors.idError = idError;
 customErrors.authError = authError;
@@ -79,6 +85,7 @@ customErrors.incorrectCredentials = incorrectCredentials;
 customErrors.authMissing = authMissing;
 customErrors.accNotFound = accNotFound;
 customErrors.accNotOfCustomer = accNotOfCustomer;
+customErrors.notEnoughFunds = notEnoughFunds;
 
 module.exports = {
     formatError,
