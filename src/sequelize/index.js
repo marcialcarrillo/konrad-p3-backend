@@ -2,17 +2,17 @@ const { Sequelize } = require("sequelize");
 
 const path = "mysql://root:admin@localhost:3306/bank2";
 
-// const sequelize = new Sequelize(path, { logging: false });
+const sequelize = new Sequelize(path, { logging: false });
 
-const sequelize = new Sequelize(
-    "heroku_4940732d2d57a84",
-    "bbfd823f095643",
-    "cf42faee",
-    {
-        dialect: "mysql",
-        host: "us-cdbr-east-06.cleardb.net",
-    }
-);
+// const sequelize = new Sequelize(
+//     "heroku_4940732d2d57a84",
+//     "bbfd823f095643",
+//     "cf42faee",
+//     {
+//         dialect: "mysql",
+//         host: "us-cdbr-east-06.cleardb.net",
+//     }
+// );
 
 const modelDefiners = [
     require("../models/users.model"),
