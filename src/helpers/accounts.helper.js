@@ -1,13 +1,13 @@
+require("dotenv").config();
+
 const ibanToAccNumber = (iban) => {
     const slicedIban = iban.slice(2);
-    //TODO: use env variables
-    const account = BigInt(slicedIban) - BigInt(41015201001092741156);
+    const account = BigInt(slicedIban) - BigInt(process.env.IBAN_SEED);
     return Number(account);
 };
 
 const accNumberToIban = (accNumber) => {
-    //TODO: use env variables
-    const account = BigInt(accNumber) + BigInt(41015201001092741156);
+    const account = BigInt(accNumber) + BigInt(process.env.IBAN_SEED);
     const iban = `CR${account}`;
     return iban;
 };

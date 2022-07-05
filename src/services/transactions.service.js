@@ -34,58 +34,11 @@ const addTransaction = async (body, destinationAccount) => {
     return newTransaction;
 };
 
-// const addTransactionAndAccount = async (body) => {
-//     //hash the password
-//     const hash = bcrypt.hashSync(body.password, saltRounds);
 
-//     //add the transaction to the database
-//     const newTransaction = await Transaction.create(
-//         {
-//             fullName: body.fullName,
-//             idNumber: body.idNumber,
-//             incomeSource: body.incomeSource,
-//             email: body.email,
-//             password: hash,
-//             accounts: body.accounts,
-//         },
-//         {
-//             include: [TransactionAccAssociation],
-//         }
-//     );
-//     return newTransaction;
-// };
-
-// const loginTransaction = async (body) => {
-//     const email = body.email;
-//     const password = body.password;
-//     let transaction = await Transaction.findOne({
-//         where: { email: email },
-//         include: TransactionAccAssociation,
-//     });
-//     const hash = transaction.password;
-//     const match = await bcrypt.compare(password, hash);
-//     // const accounts = transaction.accounts.map(acc => acc.iban)
-//     if (match) {
-//         //TODO: use env variables
-//         let token = jwt.sign({ email: email }, "not_hard_coded");
-//         return token;
-//     } else {
-//         return null;
-//     }
-// };
-
-// const deleteTransaction = async (idNumber) => {
-//     const deletedTransaction = await Transaction.destroy({
-//         where: { idNumber: idNumber },
-//     });
-//     return deletedTransaction;
-// };
 
 module.exports = {
     getAllTransactions,
     getTransactionsByAccNumber,
     addTransaction,
-    // deleteTransaction,
-    // loginTransaction,
-    // addTransactionAndAccount,
+
 };

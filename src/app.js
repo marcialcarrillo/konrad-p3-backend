@@ -9,6 +9,7 @@ const uploadRoutes = require("./routes/upload.routes");
 // const sequelize = require("./config/sequelize.config");
 const { sequelize } = require("./sequelize/index");
 
+
 const { errorHandler } = require("./middleware/errorHandling.middleware");
 
 app.use(

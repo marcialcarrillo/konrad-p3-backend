@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 const User = sequelize.models.User;
+require("dotenv").config();
 
 const findUser = async (query) => {
     let user = await User.findOne(query);
@@ -64,6 +65,7 @@ const addUserAndAccount = async (body) => {
             fullName: body.fullName,
             idNumber: body.idNumber,
             idImage: body.idImage,
+            profilePicture: body.profilePicture,
             incomeSource: body.incomeSource,
             email: body.email,
             password: hash,
@@ -85,10 +87,8 @@ const loginUser = async (body) => {
     });
     const hash = user.password;
     const match = await bcrypt.compare(password, hash);
-    // const accounts = user.accounts.map(acc => acc.iban)
     if (match) {
-        //TODO: use env variables
-        let token = jwt.sign({ email: email }, "not_hard_coded");
+        let token = jwt.sign({ email: email }, process.env.SECRET_KEY);
         return token;
     } else {
         return null;

@@ -5,14 +5,14 @@ const Bill = sequelize.models.Bill;
 
 const findBills = async (email) => {
     let account = await Bill.findAll({
-        where: { debtorEmail: email },
+        where: { UserEmail: email },
     });
     return account;
 };
 
 const payBill = async (email, serviceName) => {
     let account = await Bill.destroy({
-        where: { debtorEmail: email, serviceName: serviceName },
+        where: { UserEmail: email, serviceName: serviceName },
     });
     return account;
 };

@@ -3,6 +3,8 @@ const errorHandler = (err, req, res, next) => {
   const errorName = err.name;
   const errorMessage = err.message;
 
+  console.log(err);
+
   if (code) {
     //custom errors
     res.status(code).send({ name: errorName, message: errorMessage });

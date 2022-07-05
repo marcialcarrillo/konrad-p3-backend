@@ -18,6 +18,10 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+            profilePicture: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
             incomeSource: {
                 type: DataTypes.ENUM,
                 allowNull: false,

@@ -63,6 +63,12 @@ const accNotFound = {
     code: 400,
 };
 
+const accNotOfCustomer = {
+    name: "accNotOfCustomer",
+    message: "the customer doesn't own an account by that number",
+    code: 400,
+};
+
 //Inject the custom errors to our obj handler
 customErrors.idError = idError;
 customErrors.authError = authError;
@@ -71,6 +77,8 @@ customErrors.usernameTaken = userTaken;
 customErrors.loginFailure = loginFailure;
 customErrors.incorrectCredentials = incorrectCredentials;
 customErrors.authMissing = authMissing;
+customErrors.accNotFound = accNotFound;
+customErrors.accNotOfCustomer = accNotOfCustomer;
 
 module.exports = {
     formatError,

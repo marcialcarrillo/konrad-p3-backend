@@ -1,4 +1,5 @@
 const { sequelize } = require("../sequelize/index");
+const { customErrors } = require("../helpers/errors.helper");
 
 const Account = sequelize.models.Account;
 
@@ -11,6 +12,12 @@ const getAccounts = async () => {
     const accounts = await Account.findAll();
 
     return accounts;
+};
+
+const verifyAccountOwnership = async (accountNumber, email) => {
+    return await Account.findOne({
+        where: { accountNumber: accountNumber, UserEmail: email },
+    });
 };
 
 const addAccount = async (body) => {
@@ -63,4 +70,5 @@ module.exports = {
     deleteAccount,
     addBalance,
     deductBalance,
+    verifyAccountOwnership,
 };
