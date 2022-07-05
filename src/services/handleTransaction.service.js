@@ -36,7 +36,12 @@ const handleInternalTransaction = async (body, email) => {
 
         await deductBalance(originAccount, amount);
         await addTransaction(body, destinationAccount);
-        await addBalance(destinationAccount, amount);
+        
+        //deduct balance if the account exists, otherwise just remove the money
+        const accountFound = await findAccount(destinationAccount);
+        if (accountFound) {
+            await addBalance(destinationAccount, amount);
+        }
         const result = await findUserWithAccounts(email);
         return result;
     } else {
