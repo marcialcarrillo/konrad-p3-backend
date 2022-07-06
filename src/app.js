@@ -14,8 +14,8 @@ const { errorHandler } = require("./middleware/errorHandling.middleware");
 
 app.use(
     cors({
-        // origin: "http://127.0.0.1:3000",
-        origin: "https://kg-frontend-marcial.herokuapp.com",
+        origin: "http://127.0.0.1:3000",
+        // origin: "https://kg-frontend-marcial.herokuapp.com",
         credentials: true,
     })
 );
