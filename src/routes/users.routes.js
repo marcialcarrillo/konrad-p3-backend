@@ -53,6 +53,24 @@ userRouter
         }
     });
 
+console.log("users", process.env.PLATFORM);
+
+let cookieObj = {};
+if (process.env.PLATFORM === "HEROKU") {
+    cookieObj = {
+        sameSite: "none",
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+    };
+}
+else 
+{
+    cookieObj = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+    };
+}
+
 userRouter.route("/login").post(async (req, res, next) => {
     try {
         let user = await findUser({ where: { email: req.body.email } });
@@ -61,11 +79,7 @@ userRouter.route("/login").post(async (req, res, next) => {
             !token
                 ? next(customErrors.loginFailure)
                 : res
-                      .cookie("access_token", token, {
-                          sameSite: "none",
-                          httpOnly: true,
-                          secure: process.env.NODE_ENV === "production",
-                      })
+                      .cookie("access_token", token, cookieObj)
                       .send({ token: token });
         } else {
             next(customErrors.loginFailure);

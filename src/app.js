@@ -9,16 +9,23 @@ const uploadRoutes = require("./routes/upload.routes");
 // const sequelize = require("./config/sequelize.config");
 const { sequelize } = require("./sequelize/index");
 
-
 const { errorHandler } = require("./middleware/errorHandling.middleware");
 
-app.use(
-    cors({
-        origin: "http://127.0.0.1:3000",
-        // origin: "https://kg-frontend-marcial.herokuapp.com",
+let corsObj = {};
+console.log("app", process.env.TARGET);
+if (process.env.TARGET === "HEROKU") {
+    corsObj = {
+        origin: "https://kg-frontend-marcial.herokuapp.com",
         credentials: true,
-    })
-);
+    };
+} else {
+    corsObj = {
+        origin: "http://127.0.0.1:3000",
+        credentials: true,
+    };
+}
+
+app.use(cors(corsObj));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
