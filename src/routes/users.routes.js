@@ -1,5 +1,6 @@
 const express = require("express");
 const userRouter = express.Router();
+const { Op } = require("sequelize");
 userRouter.use(express.json());
 const {
     findUser,
@@ -31,13 +32,14 @@ userRouter
         try {
             //verify if the user already exists and return an error if they do
             //TODO: use OR operator
-            let user = await findUser({ where: { email: req.body.email } });
-            if (!user) {
-                //try to find him by his id
-                user = await findUser({
-                    where: { idNumber: req.body.idNumber },
-                });
-            }
+            let user = await findUser({
+                where: {
+                    [Op.or]: [
+                        { email: req.body.email },
+                        { idNumber: req.body.idNumber },
+                    ],
+                },
+            });
             if (!user) {
                 //not found, add him
                 await addUserAndAccount(req.body);
@@ -48,12 +50,9 @@ userRouter
                 next(customErrors.userTaken);
             }
         } catch (err) {
-            console.log("post error: ", err);
             next(err);
         }
     });
-
-console.log("users", process.env.PLATFORM);
 
 let cookieObj = {};
 if (process.env.PLATFORM === "HEROKU") {
@@ -62,9 +61,7 @@ if (process.env.PLATFORM === "HEROKU") {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
     };
-}
-else 
-{
+} else {
     cookieObj = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -100,7 +97,7 @@ userRouter
 
 userRouter
     .use(authenticateUser)
-    .route("/")
+    .route("/account")
     .delete(async (req, res, next) => {
         try {
             const idNumber = req.params.id;

@@ -11,16 +11,6 @@ const {
 const { customErrors } = require("../helpers/errors.helper");
 const authenticateUser = require("../middleware/authorization.middleware");
 
-// billRouter.route("/").delete(async (req, res, next) => {
-//     try {
-//         const email = req.body.email;
-//         const serviceName = req.body.serviceName;
-//         const billPaid = await payBill(email, serviceName);
-//         res.send(billPaid);
-//     } catch (err) {
-//         next(err);
-//     }
-// });
 
 billRouter
     .use(authenticateUser)
