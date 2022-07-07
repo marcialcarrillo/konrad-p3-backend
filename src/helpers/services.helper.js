@@ -18,11 +18,12 @@ const servicesNames = [
     "Spotify",
     "Netflix",
     "HBO Max",
-    "Disney Plus"
+    "Disney Plus",
 ];
 
 const getRandomServices = (email) => {
-    const maxAmountToPay = 25;
+    const maxAmountToPay = 45000;
+    const minAmountToPay = 3500;
     const minNumberOfServices = 10;
     let randomNumOfServices = Math.round(Math.random() * servicesNames.length);
 
@@ -35,11 +36,10 @@ const getRandomServices = (email) => {
         Math.max(randomNumOfServices, minNumberOfServices)
     );
 
-    
     //create the services to be used in a bulk create
     const servicesObjects = slicedServices.map((service) => ({
         serviceName: service,
-        amountToPay: Math.random() * maxAmountToPay,
+        amountToPay: Math.max(Math.random() * maxAmountToPay, minAmountToPay),
         UserEmail: email,
     }));
 
