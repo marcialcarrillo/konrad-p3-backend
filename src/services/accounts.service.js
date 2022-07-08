@@ -48,10 +48,12 @@ const addBalance = async (accountNumber, amount) => {
 
 const deductBalance = async (accountNumber, amount) => {
     //check if the origin account has enough balance, throw an error otherwise
-    const account = Account.findByPk(accountNumber);
-    if(!account) {throw customErrors.accNotFound};
+    const account = await Account.findByPk(accountNumber);
+    if (!account) {
+        throw customErrors.accNotFound;
+    }
     const newBalance = account.balance - amount;
-    if (newBalance < 0) {
+    if (Number(newBalance) < 0) {
         throw customErrors.notEnoughFunds;
     }
 

@@ -10,7 +10,7 @@ const servicesNames = [
     "RACSA",
     "Kolbi",
     "Claro",
-    "Accountants Association",
+    "Tennis Club",
     "Indoor Club",
     "360 Fitness",
     "UCR Matricula",
