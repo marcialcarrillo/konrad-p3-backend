@@ -10,19 +10,10 @@ const { sequelize } = require("./sequelize/index");
 
 const { errorHandler } = require("./middleware/errorHandling.middleware");
 
-let corsObj = {};
-console.log("app", process.env.TARGET);
-if (process.env.TARGET === "HEROKU") {
-    corsObj = {
-        origin: "https://kg-frontend-marcial.herokuapp.com",
-        credentials: true,
-    };
-} else {
-    corsObj = {
-        origin: "http://127.0.0.1:3000",
-        credentials: true,
-    };
-}
+let corsObj = {
+    origin: process.env.TARGET,
+    credentials: true,
+};
 
 app.use(cors(corsObj));
 app.use(express.json());

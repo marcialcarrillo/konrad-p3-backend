@@ -54,19 +54,11 @@ userRouter
         }
     });
 
-let cookieObj = {};
-if (process.env.PLATFORM === "HEROKU") {
-    cookieObj = {
-        sameSite: "none",
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-    };
-} else {
-    cookieObj = {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-    };
-}
+let cookieObj = {
+    sameSite: process.env.PLATFORM === "HEROKU" ? "none" : "lax",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+};
 
 userRouter.route("/login").post(async (req, res, next) => {
     try {
