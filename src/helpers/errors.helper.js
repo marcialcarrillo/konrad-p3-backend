@@ -82,6 +82,14 @@ const notEnoughFunds = {
     code: 400,
 };
 
+const tooMuchMoney = {
+    name: "tooMuchMoney",
+    title: "Account Over Limit",
+    message:
+        "Personal accounts can have up to 1 billion CRC, consider opening a business account.",
+    code: 400,
+};
+
 //Inject the custom errors to our obj handler
 customErrors.idError = idError;
 customErrors.authError = authError;
@@ -93,6 +101,7 @@ customErrors.authMissing = authMissing;
 customErrors.accNotFound = accNotFound;
 customErrors.accNotOfCustomer = accNotOfCustomer;
 customErrors.notEnoughFunds = notEnoughFunds;
+customErrors.tooMuchMoney = tooMuchMoney;
 
 module.exports = {
     formatError,

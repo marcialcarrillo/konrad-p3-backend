@@ -39,7 +39,17 @@ const deleteAccount = async (idNumber) => {
 };
 
 const addBalance = async (accountNumber, amount) => {
-    const account = await Account.increment(
+    //check if the account would have a balance over 1 billion, throw an error if true
+    const account = await Account.findByPk(accountNumber);
+    if (!account) {
+        throw customErrors.accNotFound;
+    }
+    const newBalance = Number(account.balance) + Number(amount);
+    if (Number(newBalance) > 1000000000) {
+        throw customErrors.tooMuchMoney;
+    }
+
+    await Account.increment(
         { balance: amount },
         { where: { accountNumber: accountNumber } }
     );
@@ -52,7 +62,7 @@ const deductBalance = async (accountNumber, amount) => {
     if (!account) {
         throw customErrors.accNotFound;
     }
-    const newBalance = account.balance - amount;
+    const newBalance = Number(account.balance) - Number(amount);
     if (Number(newBalance) < 0) {
         throw customErrors.notEnoughFunds;
     }
