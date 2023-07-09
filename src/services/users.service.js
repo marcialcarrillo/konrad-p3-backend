@@ -64,8 +64,6 @@ const addUserAndAccount = async (body) => {
         {
             fullName: body.fullName,
             idNumber: body.idNumber,
-            idImage: body.idImage,
-            profilePicture: body.profilePicture,
             incomeSource: body.incomeSource,
             email: body.email,
             password: hash,

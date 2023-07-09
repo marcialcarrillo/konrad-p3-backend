@@ -14,14 +14,6 @@ module.exports = (sequelize) => {
                 allowNull: false,
                 unique: true,
             },
-            idImage: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            profilePicture: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
             incomeSource: {
                 type: DataTypes.ENUM,
                 allowNull: false,

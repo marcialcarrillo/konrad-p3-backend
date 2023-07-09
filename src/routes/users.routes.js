@@ -57,7 +57,7 @@ userRouter
 let cookieObj = {
     sameSite: process.env.PLATFORM === "HEROKU" ? "none" : "lax",
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.COOKIES_SECURE_FLAG === "true",
 };
 
 userRouter.route("/login").post(async (req, res, next) => {
