@@ -55,7 +55,7 @@ userRouter
     });
 
 let cookieObj = {
-    sameSite: process.env.PLATFORM === "HEROKU" ? "none" : "lax",
+    sameSite: process.env.PLATFORM === "AD" ? "none" : "lax",
     httpOnly: true,
     secure: process.env.COOKIES_SECURE_FLAG === "true",
 };
